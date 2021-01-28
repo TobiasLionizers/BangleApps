@@ -49,3 +49,50 @@ Bangle.on('lcdPower',function(on) {
 });
 var click = setInterval(updateTime, 1000);
 setWatch(Bangle.showLauncher, BTN2, {repeat:false,edge:"falling"});
+
+setWatch(function(e) { 
+  var pressedTime = e.time-e.lastTime;
+  if (pressedTime > 1.2){
+   if (require("Storage").read("chronowid.app.js")===undefined) {
+  E.showMessage("App Source\nNot found");
+  setTimeout(drawMenu, 2000);
+} else {
+  E.showMessage("Loading...");
+load("chronowid.app.js");} 
+  }
+}, BTN1, {   repeat:true, edge:'falling' });
+
+setWatch(function(){
+  console.log("dunkler");
+ // var brightness = (require("Storage").readJSON("setting.json",1)||{})["brightness"];
+  var settings = (require("Storage").readJSON("setting.json",1));
+  var brightness = settings.brightness;
+  var newBrightness;
+  console.log(brightness);
+  if (brightness > 0.2){
+    newBrightness = brightness - 0.2;
+    settings.brightness = newBrightness;
+    require("Storage").writeJSON("setting.json",settings);
+    Bangle.setLCDBrightness(newBrightness);
+  }
+  console.log(newBrightness);
+  console.log(settings);
+  
+  
+}, BTN4, {repeat:true});
+
+setWatch(function(){
+  console.log("hell");
+  var settings = (require("Storage").readJSON("setting.json",1));
+  var brightness = settings.brightness;
+  var newBrightness;
+  console.log(brightness);
+  if (brightness < 1){
+    newBrightness = brightness + 0.2;
+    settings.brightness = newBrightness;
+    require("Storage").writeJSON("setting.json",settings);
+    Bangle.setLCDBrightness(newBrightness);
+  }
+  console.log(newBrightness);
+  console.log(settings);
+}, BTN5, {repeat:true});
