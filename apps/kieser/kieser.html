@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="../../css/spectre.min.css">
 </head>
 
-<body onload="createTable()">
+<body onload="getTrainingplan()">
     <h1>Kieser</h1>
 
     <p>
@@ -132,8 +132,61 @@
     </script>
 
     <script>
+        function getTrainingplan() {
+            createHeader();
+            Puck.eval(`require("Storage").readJSON("kieser-trainingplan.json")`, (tp) => {
+                if (typeof tp !== 'undefined' && tp.length > 0) {
+                    var machineTable = document.getElementById("machineTable");
+                    for (let machine of tp){
+                        var rowCount = machineTable.rows.length;
+                        var tr = machineTable.insertRow(rowCount);
 
-        function createTable() {
+                        tdRemoveButton = tr.insertCell(0);
+                        var removeButton = document.createElement('input');
+                        removeButton.setAttribute('type', 'button');
+                        removeButton.setAttribute('value', 'Remove');
+                        removeButton.setAttribute('style', "border: 1px solid black");
+
+                        removeButton.setAttribute('onclick', 'removeRow(this)');
+                        tdRemoveButton.appendChild(removeButton);
+
+                        tdMachine = tr.insertCell(1);
+                        var machineElement = document.createElement('input');
+                        machineElement.setAttribute('style', "border: 1px solid black");
+
+                        machineElement.setAttribute('type', 'text');
+                        machineElement.setAttribute('value', machine.machine);
+                        tdMachine.appendChild(machineElement);
+
+                        tdSetting = tr.insertCell(2);
+                        for (let setting of machine.settings){
+                            var settingElement = document.createElement('input');
+                            settingElement.setAttribute('type', 'text');
+                            settingElement.setAttribute('value', setting);
+                            tdSetting.appendChild(settingElement);
+                        }
+
+                        var addSettingButton = document.createElement('input');
+                        addSettingButton.setAttribute('type', 'button')
+                        addSettingButton.setAttribute('value', 'Add Setting');
+                        addSettingButton.setAttribute('onclick', 'addSetting(this)');
+                        tdSetting.appendChild(addSettingButton);
+                        
+
+                        tdWeight = tr.insertCell(3);
+                        var weightElement = document.createElement('input');
+                        weightElement.setAttribute('type', 'number');
+                        weightElement.setAttribute('value', machine.weight);
+                        tdWeight.appendChild(weightElement);
+                    }
+                    
+                } else {
+                    addRow();
+                }
+            });
+        }
+
+        function createHeader() {
             var arrHead = new Array();
             arrHead = ['', 'Machine Name', 'Settings', 'Weight']; // table headers.
 
@@ -153,7 +206,7 @@
             }
             var div = document.getElementById('cont');
             div.appendChild(machineTable);
-            addRow();
+            
         }
 
         function addRow() {
