@@ -8,7 +8,10 @@ var resultObject = {};
 var currentIndex = 0;
 // Array 
 //array to temporary skip machine
-var tempArray = machineArray.slice();
+var tempArray = [];
+machineArray.forEach(function(machine){
+  tempArray.push(machine);
+});
 
 function showSettings(machine) {
   clearWatch();
@@ -115,8 +118,7 @@ function showTime(machine, time) {
     g.setFontAlign(0, 0); // center font
     g.setFont("Vector", 200); // vector font, 80px  
     // draw the current counter value
-    E.showMessage("Training finished for ", machine.machine);
-    E.showMessage("Time was " + time);
+    E.showMessage("Time was " + time, machine.machine);
 
     g.setFont("6x8", 2);
     g.setFontAlign(0, 0, 3);
@@ -293,24 +295,25 @@ function allFinished() {
 
 function showMenu() {
   clearWatch();
-
+  menuObjekt = {};
   function createMenuItems() {
-    menuObjekt = {};
     menuObjekt[""] = { "title": "machines left" };
 
     tempArray.forEach(function (m, i) {
-      currentIndex = i;
       if (m.finished == false) {
-        menuObjekt[m.machine] = function () { showSettings(m); };
+        menuObjekt[m.machine] = function () { 
+          E.showMenu();
+          showSettings(machineArray[i]);
+          currentIndex = i;
+        };
       }
     });
+    menuObjekt.Exit = function () { showNext(); };
 
-    menuObjekt.Exit = function () { E.showMenu(); };
     return menuObjekt;
   }
 
-  var mainmenu = createMenuItems();
-  console.log(mainmenu);
+ var mainmenu = createMenuItems();
   E.showMenu(mainmenu);
 }
 
