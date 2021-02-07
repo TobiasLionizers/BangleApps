@@ -5,7 +5,7 @@ var is12Hour = (require("Storage").readJSON("setting.json",1)||{})["12hour"];
 var locale = require("locale");
 var CHARW = 28; // how tall are digits?
 var CHARP = 2; // how chunky are digits?
-var Y = 50; // start height
+var Y = 75; // start height
 // Offscreen buffer
 var buf = Graphics.createArrayBuffer(CHARW+CHARP*2,CHARW*2 + CHARP*2,1,{msb:true});
 var bufimg = {width:buf.getWidth(),height:buf.getHeight(),buffer:buf.buffer};
@@ -242,7 +242,12 @@ function stopWatch() {
   }
 
   // Bind BTN1 to call the reset function:
-  if (!w1) w1 = setWatch(resetStopWatch, BTN1, {repeat:false,edge:"falling"});
+  if (!w1) w1 = setWatch(function(e) { 
+    var pressedTime = e.time-e.lastTime;
+    if (pressedTime < 1.2){
+     resetStopWatch();
+    }
+  }, BTN1, {   repeat:true, edge:'falling' });
 
   // Draw elapsed time:
   g.reset();
@@ -259,7 +264,7 @@ function stopWatch() {
 }
 
 function resetStopWatch() {
-
+  console.log("resetting");
   // Stop the interval if necessary:
   if (swInterval) {
     clearInterval(swInterval);
@@ -316,3 +321,50 @@ setWatch(Bangle.showLauncher, BTN2, {repeat:false,edge:"falling"});
 // Start stopwatch when BTN3 is pressed
 setWatch(() => {swInterval=setInterval(stopWatch, 1000);stopWatch();}, BTN3, {repeat:false,edge:"falling"});
 B3 = 1;  // BTN3 is bound to start the stopwatch
+
+setWatch(function(){
+  console.log("dunkler");
+ // var brightness = (require("Storage").readJSON("setting.json",1)||{})["brightness"];
+  var settings = (require("Storage").readJSON("setting.json",1));
+  var brightness = settings.brightness;
+  var newBrightness;
+  console.log(brightness);
+  if (brightness > 0.2){
+    newBrightness = brightness - 0.2;
+    settings.brightness = newBrightness;
+    require("Storage").writeJSON("setting.json",settings);
+    Bangle.setLCDBrightness(newBrightness);
+  }
+  console.log(newBrightness);
+  console.log(settings);
+  
+  
+}, BTN4, {repeat:true});
+
+setWatch(function(){
+  console.log("hell");
+  var settings = (require("Storage").readJSON("setting.json",1));
+  var brightness = settings.brightness;
+  var newBrightness;
+  console.log(brightness);
+  if (brightness < 1){
+    newBrightness = brightness + 0.2;
+    settings.brightness = newBrightness;
+    require("Storage").writeJSON("setting.json",settings);
+    Bangle.setLCDBrightness(newBrightness);
+  }
+  console.log(newBrightness);
+  console.log(settings);
+}, BTN5, {repeat:true});
+
+setWatch(function(e) { 
+    var pressedTime = e.time-e.lastTime;
+    if (pressedTime > 1.2){
+     if (require("Storage").read("chronowid.app.js")===undefined) {
+    E.showMessage("App Source\nNot found");
+    setTimeout(drawMenu, 2000);
+  } else {
+    E.showMessage("Loading...");
+load("chronowid.app.js");} 
+    }
+  }, BTN1, {   repeat:true, edge:'falling' });

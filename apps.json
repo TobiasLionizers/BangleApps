@@ -12,6 +12,24 @@
     ],
     "sortorder" : -10
   },
+  {
+    "id": "kieser",
+    "name": "Kieser App",
+    "icon": "app-icon.png",
+    "version":"0.01",
+    "description": "Full training plan and timer for the BangleJS",
+    "tags": "gym,exercise",
+    "type": "app",
+    "interface": "kieser.html",
+    "allow_emulator": false,
+    "readme": "README.md",
+    "storage": [
+      {"name":"kieser.app.js", "url": "kieser.app.js"},
+      {"name":"kieser-trainingplan.json","url":"kieser-trainingplan.json"},
+      {"name":"kieser-results.json","url":"kieser-results.json"},
+      {"name":"kieser.img","url":"app-icon.js","evaluate":true}
+    ]
+  },
   { "id": "moonphase",
     "name": "Moonphase",
     "icon": "app.png",
