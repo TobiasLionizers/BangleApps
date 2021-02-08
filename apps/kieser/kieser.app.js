@@ -1,7 +1,7 @@
 var machineArray = require("Storage").readJSON("kieser-trainingplan.json", false);
 var resultFile = require("Storage").readJSON("kieser-results.json", false);
 
-var startDate = new Date().toUTCString();
+var startDate = new Date();//.toUTCString();
 
 var trainingTimes = new Array(machineArray.length);
 var resultObject = {};
@@ -272,12 +272,18 @@ function allFinished() {
   resultFile.push(resultObject);
   require("Storage").writeJSON("kieser-results.json", resultFile);
   require("Storage").writeJSON("kieser-trainingplan.json", machineArray);
+  var endDate = new Date();//.toUTCString();
+  var trainingTime = Math.floor((endDate.getTime() - startDate.getTime())/ 1000);
+  console.log("Start "+ startDate);
+  console.log("Ende "+ endDate);
+  
+  console.log("gesamt" + trainingTime);
 
   g.clear();
   g.setFontAlign(0, 0); // center font
   g.setFont("Vector", 200); // vector font, 80px  
   // draw the current counter value
-  E.showMessage("Training finished");
+  E.showMessage("Trainingtime was " + trainingTime + "sec", "Training finished");
 
   g.setFont("6x8", 2);
   g.setFontAlign(0, 0, 3);
