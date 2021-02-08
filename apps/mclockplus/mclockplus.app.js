@@ -195,7 +195,7 @@ function showTime() {
   var d = new Date();
   var hours = d.getHours();
   if (is12Hour) hours = ((hours + 11) % 12) + 1;
-  var t = (" "+hours).substr(-2)+":"+
+  var t = ("0"+hours).substr(-2)+":"+
           ("0"+d.getMinutes()).substr(-2);
   var l = lastTime;
   // same - don't animate
