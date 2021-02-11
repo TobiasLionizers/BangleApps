@@ -2,43 +2,48 @@
 
 <head>
    <!--  <link rel="stylesheet" href="../../css/spectre.min.css">  -->
+      <link rel="stylesheet" href="print.css">
+
 </head>
 
 <body onload="getTrainingplan()">
-    <h1>Kieser</h1>
+    <div class="not-printable">
+        <h1>Kieser</h1>
 
-    <p>
-        Enter your training plan here. The weight will be increased/decreased automatically according to your training
-        time.
-    </p>
-    <div id="cont">
-        <h4>Trainingsplan</h4>
+        <p>
+            Enter your training plan here. The weight will be increased/decreased automatically according to your training
+            time.
+        </p>
+        <div id="cont">
+            <h4>Trainingsplan</h4>
+        </div>
+        <p>
+            <input type="button" id="bt" value="Add New Machine" onclick="addRow()" />
+        </p>
+
+
+        <br><br>
+        <button id="upload" class="btn btn-primary">Upload</button>
+
+        <br><br>
+        <hr>
+        <h4>Show training results:</h4>
+        <button id="get-data" class="btn btn-primary">Get Data</button>
+        <button id="print-results" class="btn btn-primary" onclick="printResults()">Print Results</button>
+        <!-- <button id="download-data" class="btn btn-primary">Download Data</button> -->
+        <!-- <button id="delete-data" class="btn btn-primary">Delete Data</button> -->
+
+        <input type="file" id="file-input" />
     </div>
-    <p>
-        <input type="button" id="bt" value="Add New Machine" onclick="addRow()" />
-    </p>
-
-
-    <br><br>
-    <button id="upload" class="btn btn-primary">Upload</button>
-
-    <br><br>
-    <hr>
-    <h4>Show training results:</h4>
-    <button id="get-data" class="btn btn-primary">Get Data</button>
-    <button id="download-data" class="btn btn-primary">Download Data</button>
-    <button id="delete-data" class="btn btn-primary">Delete Data</button>
-
-    <input type="file" id="file-input" />
     <div id="result-content"></div>
-
-
-
-
 
     <script src="../../core/lib/interface.js"></script>
 
     <script>
+
+        function printResults(){
+            window.print();
+        }
 
         // beginning of test-stuff
         function readSingleFile(e) {
@@ -79,7 +84,17 @@
 
                 var resultTable = document.createElement('table');
                 resultTable.setAttribute('id', 'resultTable');
+                resultTable.setAttribute('class', 'table');
                 resultTable.setAttribute('style', "border: 1px solid black");
+                var colGroup = document.createElement('colgroup');
+                var col = document.createElement('col');
+                col.setAttribute('id', "dateCol");
+                col.setAttribute('span', "1")
+
+                colGroup.appendChild(col);
+                resultTable.appendChild(colGroup);
+
+
                 var tr = resultTable.insertRow(-1);
 
                 for (var h = 0; h < machineNames.length; h++) {

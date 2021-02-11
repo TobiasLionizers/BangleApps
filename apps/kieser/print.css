@@ -1,0 +1,36 @@
+
+
+
+@media print {
+    .not-printable{
+        background-color: blueviolet;
+        display: none;
+    }
+    @page {
+        size:landscape;
+    }
+    table {
+        display: inline-table;
+        font: 12pt Georgia, "Times New Roman", serif;
+    width: 100% !important;
+      margin: 0 !important;
+     padding: 0 !important;
+        height: 0,5cm;
+    }
+
+    /* td {
+        width: 2,5cm;
+    } */
+    #dateCell {
+        width: 0,5cm;
+        hyphens: auto;
+    }
+
+    #dateCol {
+        width: 30px;
+    }
+    
+
+
+    
+ }
