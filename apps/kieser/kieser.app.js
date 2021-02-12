@@ -274,6 +274,8 @@ function allFinished() {
   require("Storage").writeJSON("kieser-trainingplan.json", machineArray);
   var endDate = new Date();//.toUTCString();
   var trainingTime = Math.floor((endDate.getTime() - startDate.getTime())/ 1000);
+  var trainingMinutes = parseInt(trainingTime / 60);
+  var trainingSeconds = trainingTime % 60;
   console.log("Start "+ startDate);
   console.log("Ende "+ endDate);
   
@@ -283,7 +285,7 @@ function allFinished() {
   g.setFontAlign(0, 0); // center font
   g.setFont("Vector", 200); // vector font, 80px  
   // draw the current counter value
-  E.showMessage("Trainingtime was " + trainingTime + "sec", "Training finished");
+  E.showMessage("Trainingtime was \n \n " + trainingMinutes + ":" + trainingSeconds + "\n\n minutes. \n\n Great job!" , "Training finished");
 
   g.setFont("6x8", 2);
   g.setFontAlign(0, 0, 3);
