@@ -172,9 +172,9 @@ function setFinished(machine, time) {
   console.log("prozent" + fiveProcent);
   console.log(currentIndex);
   if (time < 90) {
-    newWeight = oldWeight - fiveProcent;
+    newWeight = parseInt(oldWeight) - fiveProcent;
   } else if (time > 120) {
-    newWeight = oldWeight + fiveProcent;
+    newWeight = parseInt(oldWeight) + fiveProcent;
   } else {
     newWeight = oldWeight;
   }
